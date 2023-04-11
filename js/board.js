@@ -14,7 +14,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-function preload ()
+function preload()
 {
     this.load.image('bg', 'img/board.png');
     this.load.image('ball', 'img/ball.png');
@@ -22,24 +22,24 @@ function preload ()
     this.load.image('blue', 'img/blue.png');
 }
 
-function create ()
+function create()
 {
     this.add.image(400, 300, 'bg');
     
     addBall(this, 400, 300);
 
-    addMarker(this, 20, 20, 'red');
-    addMarker(this, 50, 20, 'red');
-    addMarker(this, 80, 20, 'red');
-    addMarker(this, 110, 20, 'red');
-    addMarker(this, 140, 20, 'red');
-    addMarker(this, 170, 20, 'blue');
-    addMarker(this, 200, 20, 'blue');
-    addMarker(this, 230, 20, 'blue');
-    addMarker(this, 260, 20, 'blue');
-    addMarker(this, 290, 20, 'blue');
+    addTeam(this, 'red', 0);
+    addTeam(this, 'blue', 400);
+
 }
 
+function addTeam(scene, colour, offset) {
+    const startX = 20+offset;
+    for (let i = 0; i < 11; i++) {
+      addMarker(scene, startX+(i*30), 20, colour);
+    }
+
+}
 
 function addBall(scene, x, y) {
     var ball = scene.add.sprite(x, y, 'ball').setInteractive();
