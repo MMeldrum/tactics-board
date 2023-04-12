@@ -2,6 +2,10 @@
     background-color: cyan;
 }
 
+.board {
+    /* height: 600px; */
+}
+
 .footer {
     background-color: purple;
 }

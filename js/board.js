@@ -3,7 +3,7 @@ const blue = 0x0000ff;
 
 var config = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
+    parent: 'board',
     width: 800,
     height: 600,
     scene: {
