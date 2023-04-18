@@ -70,7 +70,7 @@ function create()
 {
   this.add.image(400, 300, 'bg');
 
-  // buildMenu(this);
+  buildMenu(this);
 
   // const oval = this.add.sprite(700, 20, 'oval').setInteractive().on('pointerup', (pointer, target) => {
   //   new DraggablePolygon(this, 400, 300, 4, 100, 0xff0000, 0.5);
@@ -87,9 +87,9 @@ function create()
 
 }
 
-// function buildMenu(scene){
-//   const settings = this.add.image(780, 20, 'settings').setInteractive();;
-//   const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
-//     new DraggablePolygon(this, 400, 300, 4, 100, 0xff0000, 0.5);
-//   });
-// }
+function buildMenu(scene){
+  const settings = scene.add.image(780, 20, 'settings').setInteractive();;
+  const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
+    new DraggablePolygon(scene, 400, 300, 4, 100, 0xff0000, 0.5);
+  });
+}
