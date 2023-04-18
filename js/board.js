@@ -1,19 +1,23 @@
+import { DraggablePolygon } from "./model/DraggablePolygon.js";
+import { Ball } from "./model/Ball.js"
+import { Marker } from "./model/Marker.js"
+import { Team } from "./model/Team.js"
+
 const red = 0xff0000;
 const blue = 0x0000ff;
 
 var config = {
-    type: Phaser.AUTO,
-    parent: 'board',
-    width: 800,
-    height: 600,
-    backgroundColor: 0xffffff,
-    scene: {
-        preload: preload,
-        create: create
-    }
+  type: Phaser.AUTO,
+  parent: 'board',
+  width: 800,
+  height: 600,
+  backgroundColor: 0xffffff,
+  scene: {
+    preload: preload,
+    create: create
+  }
 };
 
-const defaultBallLocation = {'x': 400, 'y': 300};
 
 const defaultMarkerLocations = {
   'red': [
@@ -48,87 +52,44 @@ var game = new Phaser.Game(config);
 
 function preload()
 {
-    this.load.image('bg', 'img/board.png');
-    this.load.image('settings', 'img/settings.png');
+  this.load.image('bg', 'img/board.png');
+  this.load.image('settings', 'img/settings.png');
+  this.load.image('rectangle', 'img/rectangle.png');
+  // this.load.image('oval', 'img/oval.png');
 
-    this.load.image('ball', 'img/ball.png');
+  this.load.image('ball', 'img/ball.png');
 
-    this.load.image('red', 'img/red.png');
-    this.load.image('blue', 'img/blue.png');
-    
-    this.load.image('triangle', 'img/triangle.png');
-    this.load.image('line', 'img/line.png');
+  this.load.image('red', 'img/red.png');
+  this.load.image('blue', 'img/blue.png');
+  
+  this.load.image('triangle', 'img/triangle.png');
+  this.load.image('line', 'img/line.png');
 }
 
 function create()
 {
-    this.add.image(400, 300, 'bg');
+  this.add.image(400, 300, 'bg');
 
-    const settings = this.add.image(780, 20, 'settings');
-    settings.setScale(0.05);
-    
-    const ballLocation = loadLocalStorageBall() || defaultBallLocation;
-    addBall(this, ballLocation.x, ballLocation.y);
+  // buildMenu(this);
 
-    // const markerLocations = loadLocalStorageMarkers() || defaultMarkerLocations;
-    // console.log(`markerLocations: ${JSON.stringify(markerLocations)}`)
-    addTeam(this, 'red', 10, 30);
-    addTeam(this, 'blue', 450, 30);
+  // const oval = this.add.sprite(700, 20, 'oval').setInteractive().on('pointerup', (pointer, target) => {
+  //   new DraggablePolygon(this, 400, 300, 4, 100, 0xff0000, 0.5);
+  // });
+  
+  // var r1 = this.add.ellipse(450, 450, 400, 120, 0x6666ff);
+  // r1.setAlpha(0.5);
 
-}
 
-function addTeam(scene, colour, xOffset, yOffset) {
-    const startX = 20+xOffset;
-    const startY = 20+yOffset;
-    for (let i = 0; i < 11; i++) {
-      addMarker(scene, i, startX+(i*30), startY, colour);
-    }
+  
+  let ball = new Ball(this);
+  let redTeam = new Team(this, 'red', 11);
+  let blueTeam = new Team(this, 'blue', 11);
 
 }
 
-function addBall(scene, x, y) {
-    var sprite = scene.add.sprite(x, y, 'ball');
-    sprite.setInteractive();
-    scene.input.setDraggable(sprite);
-    sprite.on('drag', (pointer, dragX, dragY) => {
-      sprite.setPosition(dragX, dragY);
-      localStorage.setItem('ballLocation', JSON.stringify({'x': dragX, 'y': dragY}));
-    });
-    sprite.setScale(0.2);
-}
-
-function addMarker(scene, id, x, y, colour) {
-  const location = localStorage.getItem(`marker${colour}${id}Location`);
-  if (location){
-    x = JSON.parse(location).x;
-    y = JSON.parse(location).y;
-  }
-  var sprite = scene.add.sprite(x, y, colour).setInteractive();
-  sprite.setInteractive();
-  scene.input.setDraggable(sprite);
-  sprite.setData('id', id);
-  sprite.setData('colour', colour);
-  sprite.on('drag', (pointer, dragX, dragY) => {
-      sprite.setPosition(dragX, dragY);
-      const id = sprite.getData('id');
-      const colour = sprite.getData('colour');
-      localStorage.setItem(`marker${colour}${id}Location`, JSON.stringify({'colour': colour, 'x': dragX, 'y': dragY}));
-    });
-
-  sprite.setScale(0.2);
-  return sprite;
-}
-
-function addRectangle(scene, x, y, colour){
-  var polygon = new Phaser.Geom.Polygon([
-    400, 100,
-    200, 278,
-    340, 430,
-    650, 80
-]);
-}
-
-function loadLocalStorageBall(){
-  const ballLocation = localStorage.getItem('ballLocation');
-  return JSON.parse(ballLocation);
-}
+// function buildMenu(scene){
+//   const settings = this.add.image(780, 20, 'settings').setInteractive();;
+//   const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
+//     new DraggablePolygon(this, 400, 300, 4, 100, 0xff0000, 0.5);
+//   });
+// }
