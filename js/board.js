@@ -1,6 +1,5 @@
 import { DraggablePolygon } from "./model/DraggablePolygon.js";
 import { Ball } from "./model/Ball.js"
-import { Marker } from "./model/Marker.js"
 import { Team } from "./model/Team.js"
 
 const red = 0xff0000;
@@ -12,6 +11,9 @@ var config = {
   width: 800,
   height: 600,
   backgroundColor: 0xffffff,
+  dom: {
+    createContainer: true
+  },
   scene: {
     preload: preload,
     create: create
@@ -48,10 +50,19 @@ const defaultMarkerLocations = {
   ]
 }
 
+const options = [
+  "Option 1",
+  "Option 2",
+  "Option 3",
+];
+
 var game = new Phaser.Game(config);
 
 function preload()
 {
+  this.load.html('tactics-red', 'tactics-red.html');
+  this.load.html('tactics-blue', 'tactics-blue.html');
+
   this.load.image('bg', 'img/board.png');
   this.load.image('settings', 'img/settings.png');
   this.load.image('rectangle', 'img/rectangle.png');
@@ -70,6 +81,9 @@ function create()
 {
   this.add.image(400, 300, 'bg');
 
+  setupTacticsDropdown(this, 'red', 75, 25);
+  setupTacticsDropdown(this, 'blue', 200, 25);
+
   buildMenu(this);
 
   // const oval = this.add.sprite(700, 20, 'oval').setInteractive().on('pointerup', (pointer, target) => {
@@ -85,6 +99,8 @@ function create()
   let redTeam = new Team(this, 'red', 11);
   let blueTeam = new Team(this, 'blue', 11);
 
+  this.data.set('redTeam', redTeam);
+  this.data.set('blueTeam', blueTeam);
 }
 
 function buildMenu(scene){
@@ -92,4 +108,34 @@ function buildMenu(scene){
   const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
     new DraggablePolygon(scene, 400, 300, 4, 100, 0xff0000, 0.5);
   });
+}
+
+function setupTacticsDropdown(scene, colour, x, y){
+  let dropdown = scene.add.dom(x,y).createFromCache(`tactics-${colour}`);
+  let ratioX = game.config.width / window.innerWidth
+  let ratioY = game.config.height / window.innerHeight
+  dropdown.setScale(Math.max(ratioX, ratioY));dropdown.addListener('click');
+  dropdown.on('click', function(e) {
+    // different actions to do according to element 'id' property
+    const team = scene.data.get('redTeam');
+    switch(e.target.id) {
+      case '4-4-2':
+        team.setFormation('4-4-2');
+        break;
+      case '4-3-3':
+        console.log('4-3-3')
+        break;
+      case '4-5-1':
+        console.log('4-5-1')
+        break;
+      case '4-2-3-1':
+        console.log('4-2-3-1')
+        team.setFormation('4-2-3-1');
+        break;
+      case 'reset':
+        console.log('reset')
+        break;
+    }
+  }, this);
+
 }

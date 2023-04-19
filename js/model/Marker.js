@@ -26,7 +26,10 @@ class Marker extends Phaser.GameObjects.Image {
 
   }
 
-  preUpdate (time, delta) {
+  setPosition(x, y){
+    super.setPosition(x,y);
+    const key = `marker${this.colour}${this.number}Location`;
+    localStorage.setItem(key, JSON.stringify({'colour': this.colour,'x': x, 'y': y}));
   }
 
   onDrag(pointer, dragX, dragY, team, number) {
