@@ -118,7 +118,7 @@ function setupTacticsDropdown(scene, colour, x, y){
   dropdown.setScale(Math.max(ratioX, ratioY));dropdown.addListener('click');
   dropdown.on('click', function(e) {
     // different actions to do according to element 'id' property
-    const team = scene.data.get('redTeam');
+    const team = scene.data.get(`${colour}Team`);
     team.setFormation(e.target.id);
   }, this);
 
