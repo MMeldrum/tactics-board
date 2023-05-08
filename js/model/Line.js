@@ -3,10 +3,6 @@ class Line extends Phaser.GameObjects.Image {
   constructor(scene, x, y, colour) {
     super(scene, x, y, colour);
 
-    // super([x, y], [toX, toY]);
-    // scene.add.existing(this);
-    // this.x = x;
-    // this.y = y;
 
     var sprite = scene.add.sprite(x, y, 'arrow').setName('arrow');
     // sprite.setOrigin(0.5);

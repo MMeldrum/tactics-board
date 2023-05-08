@@ -100,7 +100,7 @@ function update() {
 function buildMenu(scene){
   const settings = scene.add.image(780, 20, 'settings').setInteractive();
   const arrow = scene.add.image(700, 20, 'arrow').setScale(0.1).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
-    const line = new Line(scene, 100, 300);
+    const line = new Line(scene, 410, 300);
     scene.data.get('lines').push(line);
   });
   const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
