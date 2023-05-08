@@ -1,7 +1,6 @@
 import { DraggablePolygon } from "./model/DraggablePolygon.js";
 import { Ball } from "./model/Ball.js"
 import { Team } from "./model/Team.js"
-import { Arrow } from "./model/Arrow.js"
 import { Line } from "./model/Line.js"
 
 const red = 0xff0000;
