@@ -7,6 +7,7 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     this.x = x;
     this.y = y;
     this.setInteractive();
+    // scene.input.setDraggable(this);
     this.fillColor = fillColor;
     this.alpha = alpha;
     this.cornerSize = 10;
@@ -19,6 +20,7 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
   }
 
   generatePoints(sides, size) {
+    console.log(sides, size);
     let points = [];
     for (let i = 0; i < sides; i++) {
       let angle = (i / sides) * 2 * Math.PI;
@@ -31,9 +33,9 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
 
   onDrag(pointer, dragX, dragY) {
     console.log('ondrag');
-    // this.x = dragX;
-    // this.y = dragY;
-    // this.parent.updatePolygon();
+    this.x = dragX;
+    this.y = dragY;
+    this.parent.updatePolygon();
   }
 
   drawPolygon() {

@@ -5,6 +5,7 @@ class Team {
   constructor (scene, colour, playerCount) {
     this.players = [];
     this.colour = colour;
+    this.leftToRight = colour === 'red';
 
     console.log(`Creating ${playerCount} ${colour} players`)
     for (let index = 0; index < playerCount; index++) {
@@ -15,7 +16,7 @@ class Team {
   }
 
   setFormation(formation){
-    console.log(formation);
+    // console.log(formation);
     const GK_X = 50;
     const DEF_X = 180;
     const MID_X = 400;
@@ -36,6 +37,41 @@ class Team {
           {'x': ATT_X, 'y': 350},
         ]
         });
+        break;
+      case '4-3-3':
+        this.setTeamFormation({players:[
+          {'x': GK_X,     'y': 300},
+          {'x': DEF_X+25, 'y': 150},
+          {'x': DEF_X,    'y': 250},
+          {'x': DEF_X,    'y': 350},
+          {'x': DEF_X+25, 'y': 450},
+
+          {'x': MID_X+25, 'y': 175},
+          {'x': MID_X-50, 'y': 300},
+          {'x': MID_X+25, 'y': 425},
+          
+          {'x': ATT_X-50, 'y': 150},
+          {'x': ATT_X+25, 'y': 300},
+          {'x': ATT_X-50, 'y': 450},
+        ]
+        });
+        break;
+      case '4-5-1':
+        this.setTeamFormation({players:[
+          {'x': GK_X,     'y': 300},
+          {'x': DEF_X+25, 'y': 150},
+          {'x': DEF_X, 'y': 250},
+          {'x': DEF_X, 'y': 350},
+          {'x': DEF_X+25, 'y': 450},
+          {'x': MID_X+50, 'y': 100},
+          {'x': MID_X-25, 'y': 200},
+          {'x': MID_X-50, 'y': 300},
+          {'x': MID_X-25, 'y': 400},
+          {'x': MID_X+50, 'y': 500},
+          {'x': ATT_X, 'y': 300},
+        ]
+        });
+        break;
         break;
       case '4-2-3-1':
         this.setTeamFormation({players:[

@@ -1,6 +1,8 @@
 import { DraggablePolygon } from "./model/DraggablePolygon.js";
 import { Ball } from "./model/Ball.js"
 import { Team } from "./model/Team.js"
+import { Arrow } from "./model/Arrow.js"
+import { Line } from "./model/Line.js"
 
 const red = 0xff0000;
 const blue = 0x0000ff;
@@ -50,12 +52,6 @@ const defaultMarkerLocations = {
   ]
 }
 
-const options = [
-  "Option 1",
-  "Option 2",
-  "Option 3",
-];
-
 var game = new Phaser.Game(config);
 
 function preload()
@@ -66,7 +62,7 @@ function preload()
   this.load.image('bg', 'img/board.png');
   this.load.image('settings', 'img/settings.png');
   this.load.image('rectangle', 'img/rectangle.png');
-  // this.load.image('oval', 'img/oval.png');
+  this.load.image('arrow', 'img/arrow.png');
 
   this.load.image('ball', 'img/ball.png');
 
@@ -77,23 +73,13 @@ function preload()
   this.load.image('line', 'img/line.png');
 }
 
-function create()
-{
+function create(){
   this.add.image(400, 300, 'bg');
 
   setupTacticsDropdown(this, 'red', 75, 25);
   setupTacticsDropdown(this, 'blue', 200, 25);
 
   buildMenu(this);
-
-  // const oval = this.add.sprite(700, 20, 'oval').setInteractive().on('pointerup', (pointer, target) => {
-  //   new DraggablePolygon(this, 400, 300, 4, 100, 0xff0000, 0.5);
-  // });
-  
-  // var r1 = this.add.ellipse(450, 450, 400, 120, 0x6666ff);
-  // r1.setAlpha(0.5);
-
-
   
   let ball = new Ball(this);
   let redTeam = new Team(this, 'red', 11);
@@ -101,12 +87,27 @@ function create()
 
   this.data.set('redTeam', redTeam);
   this.data.set('blueTeam', blueTeam);
+  this.data.set('lines', []);
+  this.data.set('areas', []);
+}
+
+function update() {
+    // graphics.clear();
+    // this.graphics.lineStyle(2, 0xffffff, 1);
+
+    // this.curve.draw(this.graphics);
 }
 
 function buildMenu(scene){
-  const settings = scene.add.image(780, 20, 'settings').setInteractive();;
+  const settings = scene.add.image(780, 20, 'settings').setInteractive();
+  const arrow = scene.add.image(700, 20, 'arrow').setScale(0.1).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
+    const line = new Line(scene, 100, 300);
+    scene.data.get('lines').push(line);
+  });
   const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
-    new DraggablePolygon(scene, 400, 300, 4, 100, 0xff0000, 0.5);
+    const poly = new DraggablePolygon(scene, 400, 300, 4, 100, 0xff0000, 0.5);
+    scene.data.get('areas').push(poly);
+
   });
 }
 
@@ -118,24 +119,7 @@ function setupTacticsDropdown(scene, colour, x, y){
   dropdown.on('click', function(e) {
     // different actions to do according to element 'id' property
     const team = scene.data.get('redTeam');
-    switch(e.target.id) {
-      case '4-4-2':
-        team.setFormation('4-4-2');
-        break;
-      case '4-3-3':
-        console.log('4-3-3')
-        break;
-      case '4-5-1':
-        console.log('4-5-1')
-        break;
-      case '4-2-3-1':
-        console.log('4-2-3-1')
-        team.setFormation('4-2-3-1');
-        break;
-      case 'reset':
-        console.log('reset')
-        break;
-    }
+    team.setFormation(e.target.id);
   }, this);
 
 }
