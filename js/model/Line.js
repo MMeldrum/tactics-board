@@ -3,12 +3,12 @@ class Line extends Phaser.GameObjects.Image {
   constructor(scene, x, y, colour) {
     super(scene, x, y, colour);
 
-
+    const pointSize = 15;
     var sprite = scene.add.sprite(x, y, 'arrow').setName('arrow');
     // sprite.setOrigin(0.5);
     sprite.displayWidth = 10;
-    var point0 = scene.add.rectangle(sprite.x, sprite.y-(sprite.displayHeight/2), 10, 10, 0x00ff00).setName('point0');
-    var point1 = scene.add.rectangle(sprite.x, sprite.y+(sprite.displayHeight/2), 10, 10, 0x00ff00).setName('point1');
+    var point0 = scene.add.rectangle(sprite.x, sprite.y-(sprite.displayHeight/2), pointSize, pointSize, 0xbbffbb).setName('point0');
+    var point1 = scene.add.rectangle(sprite.x, sprite.y+(sprite.displayHeight/2), pointSize, pointSize, 0xbbffbb).setName('point1');
     
     point0.setData('line', this);
     point1.setData('line', this);
