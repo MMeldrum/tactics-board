@@ -81,6 +81,16 @@ function preload()
 
 function create(){
 
+  const text = this.make.text({
+    x: this.sys.game.scale.gameSize.width-55,
+    y: 10,
+    text: 'Tactics Board v0.0.3',
+    origin: 0.5,
+    style: {
+        font: 'bold 10px Arial',
+        fill: 'black'
+    }
+});
   // TODO move pitch setup to new class
   // const pitch = new Pitch(this, 100, 200);
 
