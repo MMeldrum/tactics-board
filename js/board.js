@@ -2,6 +2,7 @@ import { DraggablePolygon } from "./model/DraggablePolygon.js";
 import { Ball } from "./model/Ball.js"
 import { Team } from "./model/Team.js"
 import { Line } from "./model/Line.js"
+import { Pitch } from "./model/Pitch.js"
 
 const red = 0xff0000;
 const blue = 0x0000ff;
@@ -9,8 +10,11 @@ const blue = 0x0000ff;
 var config = {
   type: Phaser.AUTO,
   parent: 'board',
-  width: 800,
-  height: 600,
+  // width: 800,
+  // height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
+  // backgroundColor: 0xbbffbb,
   backgroundColor: 0xffffff,
   dom: {
     createContainer: true
@@ -51,7 +55,7 @@ const defaultMarkerLocations = {
   ]
 }
 
-var game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
 
 function preload()
 {
@@ -60,6 +64,7 @@ function preload()
 
   this.load.image('bg', 'img/board.png');
   this.load.image('settings', 'img/settings.png');
+  this.load.image('delete', 'img/delete.png');
   this.load.image('rectangle', 'img/rectangle.png');
   this.load.image('arrow', 'img/arrow.png');
 
@@ -70,10 +75,28 @@ function preload()
   
   this.load.image('triangle', 'img/triangle.png');
   this.load.image('line', 'img/line.png');
+
+  // console.log(this.sys.game.scale.gameSize.width, this.sys.game.scale.gameSize.height)
 }
 
 function create(){
-  this.add.image(400, 300, 'bg');
+
+  // TODO move pitch setup to new class
+  // const pitch = new Pitch(this, 100, 200);
+
+  const middleX = this.sys.game.scale.gameSize.width/2;
+  const middleY = this.sys.game.scale.gameSize.height/2;
+  const bg = this.add.image(middleX, middleY, 'bg');
+
+  // Maximise bg size
+  const xRatio = window.innerWidth / bg.width;
+  const yRatio = window.innerHeight / bg.height;
+  // console.log(`xRatio: ${xRatio}`);
+  // console.log(`yRatio: ${yRatio}`);
+
+  const bgScale = xRatio > yRatio ? yRatio : xRatio;
+  bg.setScale(bgScale);
+  // console.log(`bg actual width: ${bg.width*bgScale}, bg actual height: ${bg.height*bgScale}`)
 
   setupTacticsDropdown(this, 'red', 75, 25);
   setupTacticsDropdown(this, 'blue', 200, 25);
@@ -88,6 +111,13 @@ function create(){
   this.data.set('blueTeam', blueTeam);
   this.data.set('lines', []);
   this.data.set('areas', []);
+
+  this.input.on('gameobjectdown', () => {console.log('gameobjectdown');});
+}
+
+function onClicked(pointer, objectClicked) {
+  console.log('destroy!')
+  objectClicked.destroy();
 }
 
 function update() {
@@ -98,16 +128,21 @@ function update() {
 }
 
 function buildMenu(scene){
-  const settings = scene.add.image(780, 20, 'settings').setInteractive();
-  const arrow = scene.add.image(700, 20, 'arrow').setScale(0.1).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
+  const arrow = scene.add.image(660, 20, 'arrow').setScale(0.1).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
     const line = new Line(scene, 410, 300);
     scene.data.get('lines').push(line);
   });
-  const rectangle = scene.add.image(740, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
+  const rectangle = scene.add.image(700, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
     const poly = new DraggablePolygon(scene, 400, 300, 4, 100, 0xff0000, 0.5);
     scene.data.get('areas').push(poly);
+  });
+  const del = scene.add.image(740, 20, 'delete').setScale(0.5).setInteractive().on('pointerup', (pointer, target) => {
+    // const line = new Line(scene, 410, 300);
+    // scene.data.get('lines').push(line);
+    game.canvas.style.cursor = "pointer";
 
   });
+  const settings = scene.add.image(780, 20, 'settings').setInteractive();
 }
 
 function setupTacticsDropdown(scene, colour, x, y){

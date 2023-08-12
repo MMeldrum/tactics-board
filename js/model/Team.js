@@ -2,22 +2,42 @@ import { Marker } from "./Marker.js"
 
 class Team {
 
+  scene;
+
   constructor (scene, colour, playerCount) {
+    this.scene = scene;
     this.players = [];
     this.colour = colour;
     this.leftToRight = colour === 'red';
 
-    console.log(`Creating ${playerCount} ${colour} players, LTR is ${this.leftToRight}`)
+    const { width, height } = scene.sys.game.canvas;
+
+    // console.log(`Creating ${playerCount} ${colour} players, LTR is ${this.leftToRight}`)
     for (let index = 0; index < playerCount; index++) {
       const player = new Marker(scene, colour, 100, 100, index);
       this.players[index] = player;
     }
+    const bg = scene.children.list[0];
+    // console.log('bg', bg);
+    
+    // temp while adjusting formations
+    this.setFormation('4-5-1');
 
   }
 
+  calculatePosition(xPercent, yPercent) {
+    const { width, height } = this.scene.sys.game.scale.gameSize;
+    const xOffset = width * xPercent/100;
+    const yOffset = height * yPercent/100;
+    return { x: this.leftToRight ? xOffset : width - xOffset, y: yOffset};
+  }
+
+
   setFormation(formation){
     // console.log(formation);
-    const GK_X = this.leftToRight ? 50 : 750;
+    
+    // console.log(this.calculatePosition(5, 50));
+    const GK = this.calculatePosition(5, 50);
     const DEF_X = this.leftToRight ? 180 : 620;
     const MID_X = this.leftToRight ? 380 : 420;
     const ATT_X = this.leftToRight ? 600 : 200;
@@ -26,78 +46,78 @@ class Team {
     switch (formation) {
       case '4-4-2':
         this.setTeamFormation({players:[
-          {'x': GK_X,           'y': 300},
+          GK,
+          this.calculatePosition(20+5, 20),
+          this.calculatePosition(20, 37.5),
+          this.calculatePosition(20, 60),
+          this.calculatePosition(20+5, 80),
 
-          {'x': DEF_X+PUSH_FWD, 'y': 150},
-          {'x': DEF_X,          'y': 250},
-          {'x': DEF_X,          'y': 350},
-          {'x': DEF_X+PUSH_FWD, 'y': 450},
-          
-          {'x': MID_X,          'y': 150},
-          {'x': MID_X,          'y': 250},
-          {'x': MID_X,          'y': 350},
-          {'x': MID_X,          'y': 450},
-          
-          {'x': ATT_X,          'y': 250},
-          {'x': ATT_X,          'y': 350},
+          this.calculatePosition(40, 20),
+          this.calculatePosition(40, 40),
+          this.calculatePosition(40, 60),
+          this.calculatePosition(40, 80),
+
+          this.calculatePosition(70, 40),
+          this.calculatePosition(70, 60),
         ]
         });
         break;
       case '4-3-3':
         this.setTeamFormation({players:[
-          {'x': GK_X,                     'y': 300},
+          GK,
 
-          {'x': DEF_X+PUSH_FWD,           'y': 150},
-          {'x': DEF_X,                    'y': 250},
-          {'x': DEF_X,                    'y': 350},
-          {'x': DEF_X+PUSH_FWD,           'y': 450},
+          this.calculatePosition(20+5, 20),
+          this.calculatePosition(20, 37.5),
+          this.calculatePosition(20, 60),
+          this.calculatePosition(20+5, 80),
 
-          {'x': MID_X+PUSH_FWD,           'y': 175},
-          {'x': MID_X+PULL_BCK,           'y': 300},
-          {'x': MID_X+PUSH_FWD,           'y': 425},
-          
-          {'x': ATT_X+PULL_BCK+PULL_BCK,  'y': 150},
-          {'x': ATT_X+PUSH_FWD,           'y': 300},
-          {'x': ATT_X+PULL_BCK+PULL_BCK,  'y': 450},
+          this.calculatePosition(40, 30),
+          this.calculatePosition(40, 50),
+          this.calculatePosition(40, 70),
+
+          this.calculatePosition(70, 30),
+          this.calculatePosition(70, 50),
+          this.calculatePosition(70, 70),
         ]
         });
         break;
       case '4-5-1':
         this.setTeamFormation({players:[
-          {'x': GK_X,                               'y': 300},
+          GK,
 
-          {'x': DEF_X+PUSH_FWD,                     'y': 150},
-          {'x': DEF_X,                              'y': 250},
-          {'x': DEF_X,                              'y': 350},
-          {'x': DEF_X+PUSH_FWD,                     'y': 450},
+          this.calculatePosition(20+5, 20),
+          this.calculatePosition(20, 40),
+          this.calculatePosition(20, 60),
+          this.calculatePosition(20+5, 80),
 
-          {'x': MID_X+(PUSH_FWD+PUSH_FWD+PUSH_FWD), 'y': 100},
-          {'x': MID_X+PULL_BCK,                     'y': 200},
-          {'x': MID_X+(PULL_BCK+PULL_BCK),          'y': 300},
-          {'x': MID_X+PULL_BCK,                     'y': 400},
-          {'x': MID_X+(PUSH_FWD+PUSH_FWD+PUSH_FWD), 'y': 500},
+          this.calculatePosition(50+10, 15),
+          this.calculatePosition(50-2, 30),
+          this.calculatePosition(50-2, 50),
+          this.calculatePosition(50-2, 70),
+          this.calculatePosition(50+10, 85),
 
-          {'x': ATT_X,                              'y': 300},
+          this.calculatePosition(70, 50),
+
         ]
         });
         break;
         break;
       case '4-2-3-1':
         this.setTeamFormation({players:[
-          {'x': GK_X,     'y': 300},
+          GK,
 
-          {'x': DEF_X+PUSH_FWD,                     'y': 150},
-          {'x': DEF_X,                              'y': 250},
-          {'x': DEF_X,                              'y': 350},
-          {'x': DEF_X+PUSH_FWD,                     'y': 450},
-          
-          {'x': MID_X+(PUSH_FWD+PUSH_FWD),          'y': 100},
-          {'x': MID_X+(PULL_BCK+PULL_BCK+PULL_BCK), 'y': 225},
-          {'x': MID_X+(PUSH_FWD+PUSH_FWD+PUSH_FWD), 'y': 300},
-          {'x': MID_X+(PULL_BCK+PULL_BCK+PULL_BCK), 'y': 375},
-          {'x': MID_X+(PUSH_FWD+PUSH_FWD),          'y': 500},
-          
-          {'x': ATT_X,                              'y': 300},
+          this.calculatePosition(20+5, 20),
+          this.calculatePosition(20, 37.5),
+          this.calculatePosition(20, 60),
+          this.calculatePosition(20+5, 80),
+
+          this.calculatePosition(40, 30),
+          this.calculatePosition(40, 50),
+          this.calculatePosition(40, 70),
+
+          this.calculatePosition(70, 30),
+          this.calculatePosition(70, 50),
+          this.calculatePosition(70, 70),
         ]
         });
         break;

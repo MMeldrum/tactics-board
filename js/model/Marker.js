@@ -7,6 +7,8 @@ class Marker extends Phaser.GameObjects.Image {
     if (storedLocation) {
       this.x = storedLocation.x;
       this.y = storedLocation.y;
+    } else {
+      this.setPosition(x, y);
     }
 
     scene.add.existing(this);
@@ -20,8 +22,8 @@ class Marker extends Phaser.GameObjects.Image {
     scene.input.setDraggable(this);
 
     this.on('drag', (pointer, dragX, dragY, colour, number) => {
-      // console.log(`Calling ${pointer.event.pageX} ${pointer.event.pageY} ${this.colour} ${this.number}`);
-      this.onDrag(pointer, pointer.event.pageX, pointer.event.pageY, this.colour, this.number);
+      // console.log(`Calling ${dragX} ${dragY} ${this.colour} ${this.number}`);
+      this.onDrag(pointer, dragX, dragY, this.colour, this.number);
     });
 
   }

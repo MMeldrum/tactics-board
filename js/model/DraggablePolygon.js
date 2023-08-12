@@ -10,13 +10,21 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     // scene.input.setDraggable(this);
     this.fillColor = fillColor;
     this.alpha = alpha;
-    this.cornerSize = 10;
+    this.cornerSize = this.calculateCornerSize(scene);
     this.cornerColor = 0xff7777;
     this.cornerAlpha = 1;
     this.on('drag', this.onDrag, this);
+    this.on('pointerdown', this.onClick, this);
+
     this.points = this.generatePoints(sides, size);
     this.drawPolygon();
     this.drawCorners();
+  }
+
+  calculateCornerSize(scene) {
+    const width = scene.sys.game.scale.gameSize.width;
+    console.log(width/80);
+    return width/80;
   }
 
   generatePoints(sides, size) {
@@ -38,6 +46,13 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     this.parent.updatePolygon();
   }
 
+  onClick(pointer, dragX, dragY) {
+    console.log('onclick');
+    // if (game.canvas.style.cursor == "pointer") {
+      console.log('DELETE!');
+    // }
+  }
+
   drawPolygon() {
     this.clear();
     this.fillStyle(this.fillColor, this.alpha);
@@ -48,6 +63,11 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     }
     this.closePath();
     this.fillPath();
+    this.setInteractive(this, () => {
+      // if(pointer.isDown) {
+        console.log('interaction');
+      // }
+    });
   }
 
   drawCorners() {
