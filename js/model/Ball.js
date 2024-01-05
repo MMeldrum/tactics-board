@@ -3,6 +3,10 @@ class Ball extends Phaser.GameObjects.Image {
     {
         super(scene, x, y, 'ball');
         scene.add.existing(this);
+
+        const bg = scene.children.list[1];
+        this.setScale(bg.displayWidth / (100*6));
+    
         this.setInitialPosition(scene);
         this.setInteractive();
         scene.input.setDraggable(this);

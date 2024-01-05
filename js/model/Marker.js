@@ -13,6 +13,9 @@ class Marker extends Phaser.GameObjects.Image {
 
     scene.add.existing(this);
 
+    const bg = scene.children.list[1];
+    this.setScale(bg.displayWidth / (100*6));
+
     // console.log(`Creating ${colour} player ${number} at ${x},${y}`)
 
     this.colour = colour;

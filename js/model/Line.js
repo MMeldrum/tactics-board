@@ -5,10 +5,13 @@ class Line extends Phaser.GameObjects.Image {
 
     const pointSize = 15;
     var sprite = scene.add.sprite(x, y, 'arrow').setName('arrow');
+    sprite.angle = 90;
     // sprite.setOrigin(0.5);
     sprite.displayWidth = 10;
-    var point0 = scene.add.rectangle(sprite.x, sprite.y-(sprite.displayHeight/2), pointSize, pointSize, 0xbbffbb).setName('point0');
-    var point1 = scene.add.rectangle(sprite.x, sprite.y+(sprite.displayHeight/2), pointSize, pointSize, 0xbbffbb).setName('point1');
+    // var point0 = scene.add.rectangle(sprite.x, sprite.y-(sprite.displayHeight/2), pointSize, pointSize, 0xbbffbb).setName('point0');
+    // var point1 = scene.add.rectangle(sprite.x, sprite.y+(sprite.displayHeight/2), pointSize, pointSize, 0xbbffbb).setName('point1');
+    var point0 = scene.add.rectangle(sprite.x+(sprite.displayHeight/2), sprite.y, pointSize, pointSize, 0xbbffbb).setName('point0');
+    var point1 = scene.add.rectangle(sprite.x-(sprite.displayHeight/2), sprite.y, pointSize, pointSize, 0xbbffbb).setName('point1');
     
     point0.setData('line', this);
     point1.setData('line', this);
@@ -53,6 +56,7 @@ class Line extends Phaser.GameObjects.Image {
     // var sprite = p0.scene.add.sprite(p0.x, p0.y, 'arrow');
     // sprite.setName('arrow');
     sprite.setRotation(angle-1.5708);
+    // sprite.setRotation(angle);
     sprite.x = p0.x;
     sprite.y = p0.y;
     sprite.displayHeight = distance;

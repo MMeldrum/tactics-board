@@ -63,7 +63,7 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     }
     this.closePath();
     this.fillPath();
-    this.setInteractive(this, () => {
+    this.setInteractive(this, (x) => {
       // if(pointer.isDown) {
         console.log('interaction');
       // }
