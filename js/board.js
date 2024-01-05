@@ -14,8 +14,8 @@ var config = {
   parent: 'board',
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: 0xbbffbb,
-  // backgroundColor: 0xffffff,
+  // backgroundColor: 0xbbffbb,
+  backgroundColor: 0xffffff,
   dom: {
     createContainer: true
   },
