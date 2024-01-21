@@ -80,6 +80,8 @@ function preload()
   this.load.image('triangle', 'img/triangle.png');
   this.load.image('line', 'img/line.png');
 
+  this.load.image('brush', 'img/paint.png');
+
   // console.log(this.sys.game.scale.gameSize.width, this.sys.game.scale.gameSize.height)
 }
 
@@ -88,7 +90,7 @@ function create(){
   const text = this.make.text({
     x: this.sys.game.scale.gameSize.width-55,
     y: 10,
-    text: 'Tactics Board v0.0.3',
+    text: 'Tactics Board v0.0.4',
     origin: 0.5,
     style: {
         font: 'bold 10px Arial',
@@ -121,6 +123,34 @@ function create(){
   const middleY = this.sys.game.scale.gameSize.height/2;
   const bg = this.add.image(middleX, middleY, 'bg');
 
+  const rt = this.add.renderTexture(0, 0, middleX*2, middleY*2);
+  const brush = this.textures.getFrame('brush');
+
+  bg.setInteractive().on('pointermove', (pointer, currentlyOver) => {
+    // console.log(this.data.get('currentObject'));
+    if (this.data.get('currentObject') == undefined || this.data.get('currentObject') == null) {
+
+      // console.log(pointer, currentlyOver);
+      const points = pointer.getInterpolatedPosition(30);
+      // console.log(points);
+      points.forEach(p => {
+        // console.log('draw!')
+        rt.draw(brush, p.x-5, p.y-5, 1);
+      });
+    }
+  }, this);
+
+  // this.input.on('pointerdown', (pointer, currentlyOver) => {
+  //   console.log('pointerdown');
+  //   // if (currentlyOver === undefined){
+  //     console.log('null');
+  //     rt.draw(brush, pointer.x, pointer.y, 1);
+  //   // }
+  // }, this);
+
+
+
+
   // Maximise bg size
   const xRatio = window.innerWidth / bg.width;
   const yRatio = window.innerHeight / bg.height;
@@ -144,9 +174,8 @@ function create(){
   this.data.set('areas', []);
   this.data.set('deletemode', false);
 
-  this.input.on('pointerdown', (pointer, objectsClicked) => {  
-    const deletionCandidate = objectsClicked[0];
-    console.log('pointerdown', objectsClicked)
+  this.input.on('pointerdown', (pointer, currentlyOver) => {  
+    const deletionCandidate = currentlyOver[0];
     if (this.data.get('deletemode')){ 
       if (deletionCandidate instanceof Phaser.GameObjects.Image ||
         deletionCandidate instanceof Phaser.GameObjects.Sprite ||
@@ -181,6 +210,11 @@ function create(){
       }
       this.scene.systems.data.set('deletemode', false);
       console.log(this.scene.systems.data.get('deletemode'));
+    } else {
+      // if (deletionCandidate === undefined) {
+      //   console.log('else mofo')
+      //   rt.draw(brush, pointer.x, pointer.y, 1);
+      // }
     }
   });
 

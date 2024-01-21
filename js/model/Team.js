@@ -25,13 +25,11 @@ class Team {
     // this.scale = (width / 2) - (bg.displayWidth / 2);
     // this.scale = bg.displayWidth / width;
     // console.log(`left offset: ${this.scale}`)
-    
-    // temp while adjusting formations
-    this.setFormation('4-5-1');
 
   }
 
   calculatePosition(xPercent, yPercent) {
+    console.log("calculatePosition");
     const bg = this.scene.children.list[1];
     const offsetX = (window.innerWidth - bg.displayWidth) / 2;
     const offsetY = (window.innerHeight - bg.displayHeight) / 2;
@@ -42,7 +40,7 @@ class Team {
 
 
   setFormation(formation){
-    // console.log(formation);
+    console.log(formation);
     
     const GK = this.calculatePosition(5, 50);
     const DEF_X = this.leftToRight ? 180 : 620;

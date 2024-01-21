@@ -14,7 +14,8 @@ class Marker extends Phaser.GameObjects.Image {
     scene.add.existing(this);
 
     const bg = scene.children.list[1];
-    this.setScale(bg.displayWidth / (100*6));
+    const scaleFactor = 0.033;
+    this.setScale((bg.displayWidth / 100) * scaleFactor);
 
     // console.log(`Creating ${colour} player ${number} at ${x},${y}`)
 
@@ -28,6 +29,13 @@ class Marker extends Phaser.GameObjects.Image {
       // console.log(`Calling ${dragX} ${dragY} ${this.colour} ${this.number}`);
       this.onDrag(pointer, dragX, dragY, this.colour, this.number);
     });
+    
+    this.on('dragend', (pointer, dragX, dragY, colour, number) => {
+      // console.log('drag end');
+      if (this.scene.data.get('currentObject') === 'MARKER') {
+        this.scene.data.set('currentObject', null);
+      }
+    });
 
   }
 
@@ -39,6 +47,8 @@ class Marker extends Phaser.GameObjects.Image {
 
   onDrag(pointer, dragX, dragY, team, number) {
     // console.log(dragX, dragY, team, number);
+    // console.log('drag start');
+    this.scene.data.set('currentObject', 'MARKER');
     this.setPosition(dragX, dragY);
     const key = `marker${team}${number}Location`;
     localStorage.setItem(key, JSON.stringify({'colour': team,'x': dragX, 'y': dragY}));
