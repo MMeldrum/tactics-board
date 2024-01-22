@@ -128,7 +128,7 @@ function create(){
 
   bg.setInteractive().on('pointermove', (pointer, currentlyOver) => {
     // console.log(this.data.get('currentObject'));
-    if (this.data.get('currentObject') == undefined || this.data.get('currentObject') == null) {
+    if (this.data.get('currentObject') == null) {
 
       // console.log(pointer, currentlyOver);
       const points = pointer.getInterpolatedPosition(30);
