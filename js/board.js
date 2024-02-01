@@ -138,7 +138,7 @@ function create(){
       // console.log(points);
       points.forEach(p => {
         // console.log('draw!')
-        rt.draw(brush, p.x-5, p.y-5, 0.25);
+        rt.draw(brush, p.x-5, p.y-5, 0.5);
       });
     }
   }, this);
