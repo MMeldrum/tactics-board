@@ -11,7 +11,7 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     this.fillColor = fillColor;
     this.alpha = alpha;
     this.cornerSize = this.calculateCornerSize(scene);
-    this.cornerColor = 0xff7777;
+    this.cornerColor = 0xffff77;
     this.cornerAlpha = 1;
     this.on('pointerdown', this.onClick, this);
     this.on('drag', this.onDrag, this);

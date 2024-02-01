@@ -66,7 +66,7 @@ function preload()
   this.load.html('tactics-red', 'tactics-red.html');
   this.load.html('tactics-blue', 'tactics-blue.html');
 
-  this.load.image('bg', 'img/board.png');
+  this.load.image('bg', 'img/pitch.png');
   this.load.image('settings', 'img/settings.png');
   this.load.image('delete', 'img/delete.png');
   this.load.image('rectangle', 'img/rectangle.png');
@@ -80,7 +80,7 @@ function preload()
   this.load.image('triangle', 'img/triangle.png');
   this.load.image('line', 'img/line.png');
 
-  this.load.image('brush', 'img/paint.png');
+  this.load.image('brush', 'img/paint8x.png');
 
   // console.log(this.sys.game.scale.gameSize.width, this.sys.game.scale.gameSize.height)
 }
@@ -138,7 +138,7 @@ function create(){
       // console.log(points);
       points.forEach(p => {
         // console.log('draw!')
-        rt.draw(brush, p.x-5, p.y-5, 1);
+        rt.draw(brush, p.x-5, p.y-5, 0.25);
       });
     }
   }, this);
@@ -236,7 +236,7 @@ function buildMenu(scene){
   });
   arrow.setData('menuItem', 'arrow');
   const rectangle = scene.add.image(700, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
-    const poly = new DraggablePolygon(scene, 400, 300, 4, 100, 0xff0000, 0.5);
+    const poly = new DraggablePolygon(scene, 400, 300, 4, 100, 0xffff00, 0.5);
     scene.data.get('areas').push(poly);
   });
   rectangle.setData('menuItem', 'rectangle');
