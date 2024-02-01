@@ -87,6 +87,8 @@ function preload()
 
 function create(){
 
+  this.data.set('currentObject', '');
+
   const text = this.make.text({
     x: this.sys.game.scale.gameSize.width-55,
     y: 10,
@@ -126,29 +128,35 @@ function create(){
   const rt = this.add.renderTexture(0, 0, middleX*2, middleY*2);
   const brush = this.textures.getFrame('brush');
 
-  // bg.setInteractive().on('pointermove', (pointer, currentlyOver) => {
-  //   // console.log(this.data.get('currentObject'));
-  //   if (this.data.get('currentObject') == null) {
+  bg.setInteractive().on('pointermove', (pointer, x, y) => {
+    const currentlyOver = this.data.get('currentObject');
+    // console.log(`currentlyOver: ${currentlyOver}`);
+    if (currentlyOver == 'board'){
 
-  //     // console.log(pointer, currentlyOver);
-  //     const points = pointer.getInterpolatedPosition(30);
-  //     // console.log(points);
-  //     points.forEach(p => {
-  //       // console.log('draw!')
-  //       rt.draw(brush, p.x-5, p.y-5, 1);
-  //     });
-  //   }
-  // }, this);
+      // console.log(pointer, currentlyOver);
+      const points = pointer.getInterpolatedPosition(30);
+      // console.log(points);
+      points.forEach(p => {
+        // console.log('draw!')
+        rt.draw(brush, p.x-5, p.y-5, 1);
+      });
+    }
+  }, this);
 
-  // this.input.on('pointerdown', (pointer, currentlyOver) => {
-  //   console.log('pointerdown');
-  //   // if (currentlyOver === undefined){
-  //     console.log('null');
-  //     rt.draw(brush, pointer.x, pointer.y, 1);
-  //   // }
-  // }, this);
+  this.input.on('pointerdown', (pointer, currentlyOver) => {
+    // console.log('pointerdown');
+    // if (currentlyOver[0].type == 'Image'){
+    if (currentlyOver[0].texture && currentlyOver[0].texture.key === 'bg'){
+      // console.log(`currentlyOver: ${typeof currentlyOver}`);
+      this.data.set('currentObject', 'board');
+      rt.draw(brush, pointer.x, pointer.y, 1);
+    }
+  }, this);
 
-
+  this.input.on('pointerup', (pointer, currentlyOver) => {
+    // console.log('pointerup');
+    this.data.set('currentObject', '');
+  }, this);
 
 
   // Maximise bg size

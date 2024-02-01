@@ -21,7 +21,7 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
       // });
     this.on('dragend', (pointer, dragX, dragY, colour, number) => {
       console.log('poly dragend');
-      this.data.set('currentObject', null);
+      this.data.set('currentObject', 'board');
     });
 
     this.points = this.generatePoints(sides, size);

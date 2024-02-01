@@ -32,9 +32,9 @@ class Marker extends Phaser.GameObjects.Image {
     
     this.on('dragend', (pointer, dragX, dragY, colour, number) => {
       // console.log('drag end');
-      if (this.scene.data.get('currentObject') === 'MARKER') {
-        this.scene.data.set('currentObject', null);
-      }
+      // if (this.scene.data.get('currentObject') === 'MARKER') {
+        this.scene.data.set('currentObject', 'board');
+      // }
     });
 
   }
