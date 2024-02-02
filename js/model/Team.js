@@ -117,13 +117,14 @@ class Team {
           this.calculatePosition(20, 60),
           this.calculatePosition(20+PUSH_FWD, 80),
 
-          this.calculatePosition(40, 30),
-          this.calculatePosition(40, 50),
-          this.calculatePosition(40, 70),
+          this.calculatePosition(40, 37.5),
+          this.calculatePosition(40, 60),
 
-          this.calculatePosition(70, 30),
-          this.calculatePosition(70, 50),
-          this.calculatePosition(70, 70),
+          this.calculatePosition(55, 70),
+          this.calculatePosition(55, 30),
+          this.calculatePosition(55, 50),
+
+          this.calculatePosition(75, 50),
         ]
         });
         break;
