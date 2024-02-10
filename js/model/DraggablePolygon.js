@@ -27,6 +27,7 @@ class DraggablePolygon extends Phaser.GameObjects.Graphics {
     this.points = this.generatePoints(sides, size);
     this.drawPolygon();
     this.drawCorners();
+    // scene.data.get('history').push(this);
   }
 
   calculateCornerSize(scene) {

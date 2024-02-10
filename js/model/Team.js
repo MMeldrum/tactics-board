@@ -12,19 +12,25 @@ class Team {
     this.leftToRight = colour === 'red';
 
     const { width, height } = scene.sys.game.canvas;
+    
+    const halfWay = width / 2;
 
-    // console.log(`Creating ${playerCount} ${colour} players, LTR is ${this.leftToRight}`)
-    for (let index = 0; index < playerCount; index++) {
-      const player = new Marker(scene, colour, 10+(index*10), 100, index);
-      this.players[index] = player;
-    }
     const bg = scene.children.list[1];
-
+    
     // console.log(`screen width / 2: ${bg.displayWidth / 2}`)
     // console.log(`display width / 2: ${width / 2}`)
-    // this.scale = (width / 2) - (bg.displayWidth / 2);
-    // this.scale = bg.displayWidth / width;
+    this.scale = (width / 2) - (bg.displayWidth / 2);
+    this.scale = bg.displayWidth / width;
     // console.log(`left offset: ${this.scale}`)
+    
+    // console.log(`Creating ${playerCount} ${colour} players, LTR is ${this.leftToRight}`)
+    const spacing = (bg.displayWidth / 100) * 0.033*140;
+    for (let index = 0; index < playerCount; index++) {
+      const colourOffset = this.colour == 'red' ? index*-spacing : index*spacing;
+      const player = new Marker(scene, colour, halfWay + colourOffset, 50, index);
+      this.players[index] = player;
+    }
+
 
   }
 
