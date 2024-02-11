@@ -180,27 +180,27 @@ function create(){
 
 function buildMenu(scene){
 
-  const arrow = scene.add.image(660, 20, 'arrow').setScale(0.1).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
+  const arrow = scene.add.image(300, 20, 'arrow').setScale(0.2).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
     console.log(pointer, target)
     const line = new Line(scene, 550, 100);
     scene.data.get('lines').push(line);
   });
   arrow.setData('menuItem', 'arrow');
   
-  const rectangle = scene.add.image(700, 22, 'rectangle').setInteractive().on('pointerup', (pointer, target) => {
+  const rectangle = scene.add.image(360, 22, 'rectangle').setScale(1.5).setInteractive().on('pointerup', (pointer, target) => {
     const poly = new DraggablePolygon(scene, 400, 300, 4, 100, 0xffff00, 0.5);
     scene.data.get('areas').push(poly);
   });
   rectangle.setData('menuItem', 'rectangle');
   
-  const del = scene.add.image(740, 20, 'delete').setScale(0.5).setInteractive().on('pointerup', (pointer, target) => {
+  const del = scene.add.image(410, 20, 'delete').setScale(0.75).setInteractive().on('pointerup', (pointer, target) => {
     scene.data.set('deletemode', true);
     console.log(scene.data.get('deletemode'));
     game.canvas.style.cursor = "pointer";
   });
   del.setData('menuItem', 'delete');
   
-  const undo = scene.add.image(780, 20, 'undo').setScale(0.5).setInteractive().on('pointerup', (pointer, target) => {
+  const undo = scene.add.image(450, 20, 'undo').setScale(0.75).setInteractive().on('pointerup', (pointer, target) => {
     // const lastScribble = scene.data.get('history').slice(-1)[0];
     console.log(`undo list before ${scene.data.get('history')}`);
     const history = scene.data.get('history');
@@ -215,7 +215,7 @@ function buildMenu(scene){
   });
   undo.setData('menuItem', 'undo');
   
-  const settings = scene.add.image(820, 20, 'settings').setInteractive();
+  const settings = scene.add.image(500, 20, 'settings').setScale(1.5).setInteractive();
   settings.setData('menuItem', 'settings');
 }
 
