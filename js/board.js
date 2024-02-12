@@ -28,7 +28,6 @@ var config = {
   }
 };
 
-
 const game = new Phaser.Game(config);
 
 function preload()
@@ -64,7 +63,7 @@ function create(){
   const text = this.make.text({
     x: this.sys.game.scale.gameSize.width-55,
     y: 10,
-    text: 'Tactics Board v0.0.4',
+    text: 'Tactics Board v0.1.0',
     origin: 0.5,
     style: {
         font: 'bold 10px Arial',
@@ -78,29 +77,25 @@ function create(){
   const middleX = this.sys.game.scale.gameSize.width/2;
   const middleY = this.sys.game.scale.gameSize.height/2;
   const bg = this.add.image(middleX, middleY, 'bg');
-
-  const brush = this.textures.getFrame('brush');
+  const history = this.data.get('history');
   
   bg.setInteractive().on('pointermove', (pointer, x, y) => {
-    // TODO need to build 'local' array and only push to history at the end
-    // const rt = this.add.renderTexture(0, 0, middleX*2, middleY*2);
-    const rt = this.data.get('history').slice(-1)[0];
+    const gfx = history.slice(-1)[0];
     const currentlyOver = this.data.get('currentObject');
     if (currentlyOver == 'board'){
-      const points = pointer.getInterpolatedPosition(30);
+      const points = pointer.getInterpolatedPosition(60);
       points.forEach(p => {
-        rt.draw(brush, p.x-5, p.y-5, 0.5);
+        gfx.lineStyle(10, 0xffff00); // Set line style
+        gfx.strokePoints(points, false); // Draw the line
       });
-      // this.data.get('history').push(rt);
     }
   }, this);
   
   this.input.on('pointerdown', (pointer, currentlyOver) => {
     if (currentlyOver[0].texture && currentlyOver[0].texture.key === 'bg'){
-      const rt = this.add.renderTexture(0, 0, middleX*2, middleY*2);
-      this.data.get('history').push(rt);
+      const gfx = this.add.graphics();
+      history.push(gfx);
       this.data.set('currentObject', 'board');
-      // rt.draw(brush, pointer.x, pointer.y, 1);
     }
   }, this);
 
@@ -108,14 +103,12 @@ function create(){
     this.data.set('currentObject', '');
   }, this);
 
-
   // Maximise bg size
   const xRatio = window.innerWidth / bg.width;
   const yRatio = window.innerHeight / bg.height;
 
   const bgScale = xRatio > yRatio ? yRatio : xRatio;
   bg.setScale(bgScale);
-  // console.log(`bg actual width: ${bg.width*bgScale}, bg actual height: ${bg.height*bgScale}`)
 
   setupTacticsDropdown(this, 'red', 75, 25);
   setupTacticsDropdown(this, 'blue', 200, 25);
@@ -138,7 +131,7 @@ function create(){
       if (deletionCandidate instanceof Phaser.GameObjects.Image ||
         deletionCandidate instanceof Phaser.GameObjects.Sprite ||
         deletionCandidate instanceof Phaser.GameObjects.Rectangle) {
-        console.log(`deletionCandidate: ${deletionCandidate}`);
+        // console.log(`deletionCandidate: ${deletionCandidate}`);
         if (deletionCandidate instanceof Phaser.GameObjects.Sprite) {
           const line = deletionCandidate.data.get('line');
           const siblings = line.data.getAll();
@@ -151,7 +144,7 @@ function create(){
           const parent = deletionCandidate.parent;
           if (parent instanceof DraggablePolygon) {
             const siblings = parent.corners;
-            console.log(siblings.length)
+            // console.log(siblings.length)
             for(let i = 0; i < 4; i++) {
               siblings[i].destroy();
             }
@@ -167,10 +160,10 @@ function create(){
         }
       }
       this.scene.systems.data.set('deletemode', false);
-      console.log(this.scene.systems.data.get('deletemode'));
+      // console.log(this.scene.systems.data.get('deletemode'));
     } else {
       // if (deletionCandidate === undefined) {
-      //   console.log('else mofo')
+      //   console.log('else')
       //   rt.draw(brush, pointer.x, pointer.y, 1);
       // }
     }
@@ -181,7 +174,7 @@ function create(){
 function buildMenu(scene){
 
   const arrow = scene.add.image(300, 20, 'arrow').setScale(0.2).setAngle(90).setInteractive().on('pointerup', (pointer, target) => {
-    console.log(pointer, target)
+    // console.log(pointer, target)
     const line = new Line(scene, 550, 100);
     scene.data.get('lines').push(line);
   });
@@ -195,23 +188,23 @@ function buildMenu(scene){
   
   const del = scene.add.image(410, 20, 'delete').setScale(0.75).setInteractive().on('pointerup', (pointer, target) => {
     scene.data.set('deletemode', true);
-    console.log(scene.data.get('deletemode'));
+    // console.log(scene.data.get('deletemode'));
     game.canvas.style.cursor = "pointer";
   });
   del.setData('menuItem', 'delete');
   
   const undo = scene.add.image(450, 20, 'undo').setScale(0.75).setInteractive().on('pointerup', (pointer, target) => {
     // const lastScribble = scene.data.get('history').slice(-1)[0];
-    console.log(`undo list before ${scene.data.get('history')}`);
+    //console.log(`undo list before ${scene.data.get('history')}`);
     const history = scene.data.get('history');
-    console.log(history.length);
-    console.log(history);
-    const lastItem = history.splice(-1)[0];
-    lastItem.clear();
-    lastItem.destroy();
-    console.log(history.length);
+    // console.log(history.length);
+    if (history.length > 0) {
+      const lastItem = history.splice(-1)[0];
+      lastItem.clear();
+      lastItem.destroy();
+    }
     
-    console.log(`undo list after ${scene.data.get('history')}`);
+    // console.log(`undo list after ${scene.data.get('history')}`);
   });
   undo.setData('menuItem', 'undo');
   
